@@ -2,40 +2,34 @@ import React, {useState} from 'react';
 import {Button} from "react-bootstrap";
 import {Input, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Form from 'react-bootstrap/Form';
-const CreateModal = ({statuses,priorities,createTasks}) => {
+const UpdateModal = ({statuses,priorities,task,updateTask}) => {
 
     const [modal, setModal] = useState(false);
 
-    const initialState = {
-        name:'',
-        description: '',
-        status:statuses[0]?.status,
-        priority:priorities[0]
-    }
     const toggle = () => setModal(!modal);
 
-    const [newTask, setNewTask] = useState(initialState);
+    const [newTask, setNewTask] = useState(task);
 
     console.log(newTask);
 
     const onSave = () => {
         toggle();
-        createTasks(newTask);
-        setNewTask(initialState);
+        updateTask(newTask);
+       /* setNewTask(initialState);*/
     }
 
     const onCancel = () => {
         toggle();
-        setNewTask(initialState);
+       /* setNewTask(initialState);*/
     }
 
     return (
-        <div>
-            <Button variant="button" className="btn btn-outline-primary" color="danger" onClick={toggle}>
-                CREATE-|-TASKS
+        <>
+            <Button variant="button" className="btn btn-outline-warning"  onClick={toggle}>
+               Update
             </Button>
             <Modal isOpen={modal} toggle={toggle} >
-                <ModalHeader toggle={toggle}>CREATE-|-TASKS</ModalHeader>
+                <ModalHeader toggle={toggle}>Update Task</ModalHeader>
                 <ModalBody>
                     {/*це встевили з reacktstrap*/}
                     <InputGroup  style={{marginBottom:'8px'}}>
@@ -83,8 +77,8 @@ const CreateModal = ({statuses,priorities,createTasks}) => {
                     </Button>
                 </ModalFooter>
             </Modal>
-        </div>
+        </>
     );
 }
 
-export default CreateModal;
+export default UpdateModal;

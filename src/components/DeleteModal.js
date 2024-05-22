@@ -2,89 +2,57 @@ import React, {useState} from 'react';
 import {Button} from "react-bootstrap";
 import {Input, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import Form from 'react-bootstrap/Form';
-const CreateModal = ({statuses,priorities,createTasks}) => {
+const DeleteModal = ({task,deleteTask}) => {
 
     const [modal, setModal] = useState(false);
 
-    const initialState = {
-        name:'',
-        description: '',
-        status:statuses[0]?.status,
-        priority:priorities[0]
-    }
-    const toggle = () => setModal(!modal);
 
-    const [newTask, setNewTask] = useState(initialState);
+    const [checking, setChecking] = useState('');
+    const toggle = () => {
+        setModal(!modal);
+        setChecking('');
+    };
 
-    console.log(newTask);
 
-    const onSave = () => {
+    const onDelete = () => {
         toggle();
-        createTasks(newTask);
-        setNewTask(initialState);
+        deleteTask(task);
     }
 
     const onCancel = () => {
         toggle();
-        setNewTask(initialState);
     }
 
     return (
-        <div>
-            <Button variant="button" className="btn btn-outline-primary" color="danger" onClick={toggle}>
-                CREATE-|-TASKS
+        <>
+            <Button variant="button" className="btn btn-outline-danger" onClick={toggle}>
+                Delete
             </Button>
             <Modal isOpen={modal} toggle={toggle} >
-                <ModalHeader toggle={toggle}>CREATE-|-TASKS</ModalHeader>
+                <ModalHeader toggle={toggle}>DELETE-|-TASKS</ModalHeader>
                 <ModalBody>
+                    <p>To confirm, type "{task.name}" in the box below</p>
                     {/*це встевили з reacktstrap*/}
                     <InputGroup  style={{marginBottom:'8px'}}>
-                        <Input onChange={(e) =>setNewTask(
-                            {...newTask,name:e.target.value})}
-                               value={newTask.name}
+                        <Input onChange={(e) =>setChecking(
+                            e.target.value)}
+                               value={checking}
                                placeholder="task name"
                         />
                     </InputGroup>
-                    <InputGroup style={{marginBottom:'8px'}}>
-                        <br />
-                        <Input
-                            onChange={(e) =>setNewTask(
-                                {...newTask,description:e.target.value})}
-                            value={newTask.description}
-                            placeholder="task desctiption"
-                        />
-                    </InputGroup>
-                    <br />
-
-                    <Form.Select
-                        onChange={(e) =>setNewTask(
-                            {...newTask,status:e.target.value})}
-                        value={newTask.status}
-                        style={{marginBottom:'8px'}} aria-label="Default select example">
-                        {statuses.map((el)=><option value={el.status}>{el.status}</option>)}
-                    </Form.Select>
-
-                    <Form.Select
-                        onChange={(e) =>setNewTask(
-                            {...newTask,priority:e.target.value})}
-                        value={newTask.priority}
-
-                        aria-label="Default select example">
-                        {priorities.map((el)=><option value={el}>{el}</option>)}
-                    </Form.Select>
 
                 </ModalBody>
                 <ModalFooter>
-                    <Button variant="button" className="btn btn-outline-primary" color="primary" onClick={onSave}>
-                        Save
+                    <Button disabled={task.name !== checking} variant="button" className="btn btn-outline-primary" color="primary" onClick={onDelete}>
+                        Delete
                     </Button>{' '}
                     <Button variant="button" className="btn btn-outline-primary" color="secondary" onClick={onCancel}>
                         Cancel
                     </Button>
                 </ModalFooter>
             </Modal>
-        </div>
+        </>
     );
 }
 
-export default CreateModal;
+export default DeleteModal;
